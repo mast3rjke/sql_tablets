@@ -1,22 +1,28 @@
-from databases.common import create_tables, db_connect, create_genre, create_director
-from databases.models.genre_entity import GenreEntity
+"""Основной модуль приложения"""
+from databases.common import create_tables, db_connect
+from databases import consts
+from helpers import print_menu_and_get_id
 
 
 if __name__ == "__main__":
     create_tables()
 
-    user_input: str = input("""Выберете операцию:
-    1. Создать жанр
-    2. Создать режисcера
-    """)
+    operation_id: int = print_menu_and_get_id(
+        "операцию",
+        consts.OPERATIONS
+    )
+    model_id: int = print_menu_and_get_id(
+        "сущность",
+        consts.MODELS
+    )
 
-    if not user_input.isdigit() or int(user_input) not in (1, 2):
-        raise ValueError("Неправильный ввод")
+    method_name: str = consts.OPERATIONS[operation_id]["method_name"]
+    class_obj = consts.MODELS[model_id]["class"]
 
-    match int(user_input):
-        case 1:
-            GenreEntity.create()
-        case 2:
-            create_director()
+    with db_connect.cursor() as db_cursor:
+        result = getattr(class_obj, method_name)(db_connect, db_cursor)
+
+        if result:
+            print(result)
 
     db_connect.close()
