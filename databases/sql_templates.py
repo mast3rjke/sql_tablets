@@ -1,3 +1,5 @@
+"""Модуль шаблонов SQL базовых таблиц"""
+
 CREATE_DIRECTORS_TABLE: str = """
     CREATE TABLE IF NOT EXISTS "directors" (
         "id" serial NOT NULL,

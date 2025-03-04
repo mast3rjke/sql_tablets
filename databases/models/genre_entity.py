@@ -1,10 +1,12 @@
+"""Модуль модели жанра"""
 from .base_entity import BaseEntity
 
 
 class GenreEntity(BaseEntity):
+    """Модель жанра"""
     _table_name: str = "genres"
     _description: dict = {
-        "create": {
+        "fields": {
             "name": {"validators": ["required"]}
         }
     }
@@ -12,5 +14,3 @@ class GenreEntity(BaseEntity):
         "name": "название"
     }
     _human_prefix: str = "жанра"
-
-
